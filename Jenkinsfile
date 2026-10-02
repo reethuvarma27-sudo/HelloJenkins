@@ -1,36 +1,32 @@
 pipeline {
+    agent any
 
-agent any
+    stages {
 
-stages {
+        stage('Compile') {
+            steps {
+                dir('src') {
+                    bat 'javac Hello.java'
+                }
+            }
+        }
 
-stage('Compile') {
+        stage('Run') {
+            steps {
+                dir('src') {
+                    bat 'java Hello'
+                }
+            }
+        }
+    }
 
-steps {
+    post {
+        success {
+            echo 'BUILD SUCCESSFUL'
+        }
 
-dir('src') {
-bat 'javac Hello.java'
-}
-}
-}
-
-
-stage('Run') {
-
-steps {
-
-dir('src') {
-bat 'java Hello'
-
-post {
-
-success {
-
-echo 'BUILD SUCCESSFUL'
-}
-failure {
-
-echo 'BUILD FAILED'
-}
-}
+        failure {
+            echo 'BUILD FAILED'
+        }
+    }
 }
